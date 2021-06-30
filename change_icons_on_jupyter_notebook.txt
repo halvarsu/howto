@@ -1,0 +1,8 @@
+Change the icons at
+/home/halvard/miniconda3/envs/fn/lib/python3.8/site-packages/notebook/static/base/images
+or at similar locations
+
+favicon-notebook.ico is the notebook one (duh)
+
+
+

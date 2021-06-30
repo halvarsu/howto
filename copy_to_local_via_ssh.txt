@@ -1,0 +1,30 @@
+# Copying back via ssh
+
+This setup is based on creating a RemoteForward tunnel via ssh, connecting to it
+with nc on both ends and sending the stuff using a bash alias cb[1]. The alias is
+defined as
+    alias cb=nc localhost 2000
+which takes stdin and sends it to the listening nc on the local machine. The local
+machine must run the correct command before this. The command is conveniently
+defined with an alias
+    alias cbin=cbin='nc -l 2000 | xclip -i -selection clipboard'
+which also ensures that the content ends up in the correct clipboard[2].
+
+Finally, to copy text from vim, the trick is to mark the text and then run :!cb, as that
+sends the marked text to the stdin  of the command run[4]. This does replace the marked
+text as well; fixing this is on the to do list. Note that when running bash commands
+from vim, aliases are not expanded by default. To fix this, add a file ~/.vim/vim_bash
+with commands telling bash to expand aliases, as well as running the aliases desired
+(i.e. source .bash_aliases etc)[5].
+
+references:
+[1] using nc and xclip:
+ - https://stackoverflow.com/a/49890019
+[2] getting xclip to work with correct clipboard
+ - https://askubuntu.com/questions/383462/unable-to-paste-with-xclip-outside-of-terminal
+[3] setup .ssh/config with equivalent of -R 2000:localhost:2000 -> RemoteForward 2000 localhost:2000
+ - https://serverfault.com/questions/495283/convert-ssh-command-line-arguments-to-ssh-config-properties
+[4] Sending marked text in vim to a bash command
+ - https://vim.fandom.com/wiki/Use_filter_commands_to_process_text
+[5] Letting a vim-run bash utilize aliases
+ - https://vi.stackexchange.com/questions/2950/bash-not-recognizing-aliases-when-run-from-vim
